@@ -1,6 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { IconButton } from './Components';
+import { back } from './Assets';
 import styled from 'styled-components';
 
 const HeaderStyle = styled.header`
@@ -40,7 +42,9 @@ const Header = () => {
 			{isCoinDetailSet ? (
 				<div>
 					<div>
-						<button onClick={routeToOverviewPage}>Back</button>
+						<IconButton src={back} onClick={routeToOverviewPage}>
+							Back
+						</IconButton>
 					</div>
 
 					<div>
