@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFetch } from '../../Hooks';
-import { DataTable } from '../../Components';
+import { DataTable, Loading } from '../../Components';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
@@ -76,7 +76,7 @@ const OverviewContainer = () => {
 
 	return (
 		<div>
-			{isLoading ? 'loading' : <DataTable data={response.Data} columns={columns} rowOnClick={handleClickedRow} />}
+			{isLoading ? <Loading /> : <DataTable data={response.Data} columns={columns} rowOnClick={handleClickedRow} />}
 		</div>
 	);
 };

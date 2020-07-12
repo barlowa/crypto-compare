@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFetch } from '../../Hooks';
 import { useParams } from 'react-router';
+import { Loading } from '../../Components';
 
 const DetailContainer = () => {
 	const params = useParams();
@@ -44,7 +45,7 @@ const DetailContainer = () => {
 	return (
 		<div>
 			{isLoading ? (
-				'loading'
+				<Loading />
 			) : (
 				<div>
 					<div>{MKTCAP}</div>
