@@ -1,12 +1,32 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { IconButton } from './Components';
-import { back } from './Assets';
+import { IconButton, DropDown } from './Components';
+import { back, logo } from './Assets';
 import styled from 'styled-components';
 
 const HeaderStyle = styled.header`
-	height: 160px;
+	display: grid;
+	height: 130px;
+	grid-template-columns: 3fr 1fr;
+	align-items: center;
+	padding: 0 40px;
+
+	.iconDetail {
+		display: grid;
+		grid-template-columns: 30px 50px minmax(100px, auto) 1fr;
+		grid-gap: 40px;
+		align-items: center;
+	}
+	.cryptoName {
+		font-size: 20px;
+	}
+	.cryptoSymbol {
+		font-size: 12px;
+	}
+	.cryptoPrice {
+		font-size: 28px;
+	}
 `;
 
 const Header = () => {
@@ -40,7 +60,7 @@ const Header = () => {
 	return (
 		<HeaderStyle>
 			{isCoinDetailSet ? (
-				<div>
+				<div className="iconDetail">
 					<div>
 						<IconButton src={back} onClick={routeToOverviewPage}>
 							Back
@@ -52,23 +72,25 @@ const Header = () => {
 					</div>
 
 					<div>
-						<div>{FullName}</div>
-						<div>{Symbol}</div>
+						<div className="cryptoName">{FullName}</div>
+						<div className="cryptoSymbol">{Symbol}</div>
 					</div>
-					<div>{selectedCryptoPrice}</div>
+					<div className="cryptoPrice">{selectedCryptoPrice}</div>
 				</div>
 			) : (
-				'logo'
+				<div>
+					<img src={logo} alt="VF Crypto" />
+				</div>
 			)}
 			<div>
-				<select onChange={changeLocalCurrency} value={selectedLocalCurrency}>
+				<DropDown onChange={changeLocalCurrency} value={selectedLocalCurrency}>
 					{availableLocalCurrencies &&
 						availableLocalCurrencies.map((currency) => (
 							<option key={currency} value={currency}>
 								{currency}
 							</option>
 						))}
-				</select>
+				</DropDown>
 			</div>
 		</HeaderStyle>
 	);
