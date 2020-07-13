@@ -40,7 +40,7 @@ const HeaderContainer = () => {
 	//users currently selected local currency
 	const selectedLocalCurrency = useSelector((state) => state.selectedLocalCurrency);
 
-	const { isCoinDetailSet, Id, ImageUrl, Symbol, FullName } = useSelector((state) => state.selectedCryptoCoinDetails);
+	const { isCoinDetailSet, ImageUrl, Symbol, FullName } = useSelector((state) => state.selectedCryptoCoinDetails);
 	const selectedCryptoPrice = useSelector((state) => state.selectedCryptoPrice);
 
 	//send the users local currency to redux
