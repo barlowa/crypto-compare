@@ -11,7 +11,7 @@ const HeaderStyle = styled.header`
 	grid-template-columns: 3fr 1fr;
 	align-items: center;
 	padding: 0 40px;
-
+	color: #5f6276;
 	.iconDetail {
 		display: grid;
 		grid-template-columns: 30px 50px minmax(100px, auto) 1fr;
