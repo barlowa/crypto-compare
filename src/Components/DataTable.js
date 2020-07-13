@@ -31,6 +31,7 @@ const Styles = styled.div`
 		/* table header cells */
 		th {
 			height: 40px;
+			text-transform: uppercase;
 			> div {
 				margin-right: 5px;
 			}
