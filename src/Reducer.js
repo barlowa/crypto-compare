@@ -1,4 +1,4 @@
-const availableLocalCurrencies = ['GBP', 'JPY', 'USD'];
+const availableLocalCurrencies = ['USD', 'GBP', 'JPY'];
 
 const initialState = {
 	coinList: {},
