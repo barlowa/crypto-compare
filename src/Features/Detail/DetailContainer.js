@@ -17,44 +17,60 @@ const DetailContainerStyle = styled.div`
 		padding-top: 75px;
 	}
 `;
+
 const DetailContainer = () => {
-	const params = useParams();
-	const selectedCryptoCurrency = params.id;
-	const selectedLocalCurrency = useSelector((state) => state.selectedLocalCurrency);
-	const coinList = useSelector((state) => state.coinList);
 	const dispatch = useDispatch();
 
-	const [marketValues, setMarketValues] = useState();
-	//get the currency
+	//crypto currency from the url parameter
+	const params = useParams();
+	const cryptoCurrency = params.id;
+
+	//local currency from redux
+	const localCurrency = useSelector((state) => state.selectedLocalCurrency);
+	const coinList = useSelector((state) => state.coinList);
+
+	//get the price information for the selected currencies
 	const { response, isLoading, error } = useFetch(
-		`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${selectedCryptoCurrency}&tsyms=${selectedLocalCurrency}`
+		`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}&tsyms=${localCurrency}`,
+		60000
 	);
 
-	useEffect(() => {
-		const hasLoadedCoinList = Object.keys(coinList).length ? true : false;
+	//price information from api
+	const [priceInformation, setPriceInformation] = useState({
+		PRICE: '',
+		MKTCAP: '',
+		VOLUME24HOURTO: '',
+		TOTALTOPTIERVOLUME24HTO: '',
+	});
 
-		if (hasLoadedCoinList) {
-			console.log(coinList[selectedCryptoCurrency]);
+	//sets the crypto coin details in the header
+	useEffect(() => {
+		if (!isLoading && !error) {
 			dispatch({
 				type: 'SET_CRYPTO_COIN_DETAILS',
-				selectedCryptoCoinDetails: coinList[selectedCryptoCurrency],
+				selectedCryptoCoinDetails: coinList[cryptoCurrency],
 			});
 		}
-	}, [coinList, dispatch, selectedCryptoCurrency]);
+	}, [coinList, dispatch, error, isLoading, cryptoCurrency]);
 
+	//updates the price information in the header and the page
 	useEffect(() => {
-		const responseHasLoaded = Object.keys(response).length ? true : false;
-		if (responseHasLoaded && !isLoading && !error) {
-			const values = response.DISPLAY[selectedCryptoCurrency][selectedLocalCurrency];
-			setMarketValues(values);
+		if (!isLoading && !error) {
+			const values = response.DISPLAY[cryptoCurrency][localCurrency] || {
+				MKTCAP: '',
+				VOLUME24HOURTO: '',
+				TOTALTOPTIERVOLUME24HTO: '',
+				PRICE: '',
+			};
 			dispatch({
 				type: 'SET_CRYPTO_PRICE',
 				selectedCryptoPrice: values.PRICE,
 			});
+			setPriceInformation(values);
 		}
-	}, [dispatch, error, isLoading, response, selectedCryptoCurrency, selectedLocalCurrency]);
+	}, [dispatch, error, isLoading, response.DISPLAY, cryptoCurrency, localCurrency]);
 
-	const { MKTCAP, VOLUME24HOURTO, TOTALTOPTIERVOLUME24HTO } = marketValues || {};
+	const { MKTCAP, VOLUME24HOURTO, TOTALTOPTIERVOLUME24HTO } = priceInformation || {};
 	return (
 		<DetailContainerStyle>
 			{isLoading ? (
@@ -67,14 +83,12 @@ const DetailContainer = () => {
 						volume24h={VOLUME24HOURTO}
 						circulatingSupply={TOTALTOPTIERVOLUME24HTO}
 						totalSupply={TOTALTOPTIERVOLUME24HTO}
-						cryptoCurrency={selectedCryptoCurrency}
+						cryptoCurrency={cryptoCurrency}
 					/>
 				</div>
 			)}
 		</DetailContainerStyle>
 	);
 };
-
-DetailContainer.propTypes = {};
 
 export default DetailContainer;
