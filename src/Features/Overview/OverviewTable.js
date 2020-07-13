@@ -12,6 +12,10 @@ const InlineFlex = styled.div`
 	}
 `;
 
+const Change24HStyle = styled.div`
+	color: ${({ value }) => (value > 0 && 'green') || (value < 0 && 'red')};
+`;
+
 const OverviewTable = ({ selectedLocalCurrency, data, handleClickedRow }) => {
 	//tells the data table which data to show from the response object
 	const columns = useMemo(
@@ -48,8 +52,11 @@ const OverviewTable = ({ selectedLocalCurrency, data, handleClickedRow }) => {
 			},
 			{
 				Header: '24h Change',
-				accessor: `DISPLAY.${selectedLocalCurrency}.CHANGE24HOUR`,
+				accessor: `DISPLAY.${selectedLocalCurrency}.CHANGEPCT24HOUR`,
 				width: 1,
+				Cell: ({ value }) => {
+					return <Change24HStyle value={value}>{value} %</Change24HStyle>;
+				},
 			},
 		],
 
