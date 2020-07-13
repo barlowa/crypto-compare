@@ -1,22 +1,12 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useFetch } from '../../Hooks';
-import { DataTable, Loading } from '../../Components';
+import { Loading } from '../../Components';
 import { useHistory } from 'react-router';
-import styled from 'styled-components';
+import OverviewTable from './OverviewTable';
 
-const InlineFlex = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	> div {
-		margin-right: 10px;
-	}
-`;
 const OverviewContainer = () => {
 	const history = useHistory();
-
-	const dispatch = useDispatch();
 
 	const selectedLocalCurrency = useSelector((state) => state.selectedLocalCurrency);
 
@@ -25,58 +15,22 @@ const OverviewContainer = () => {
 		`https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=${selectedLocalCurrency}`
 	);
 
-	//row in the table is passed an argument, push to the detail page and set a query string with the rows name
-	function handleClickedRow({ CoinInfo, RAW }) {
-		console.log(CoinInfo);
+	//data in the clicked row from is passed a parameter, user is then pushed to the detail page
+	function handleClickedRow({ CoinInfo }) {
 		history.push(`/${CoinInfo.Name}`);
 	}
 
-	//tells the data table which data to show from the response object
-	const columns = React.useMemo(
-		() => [
-			{
-				Header: 'Cryptocurrency',
-				accessor: 'CoinInfo.FullName',
-				width: 2,
-				Cell: ({ row, value }) => {
-					return (
-						<InlineFlex>
-							<div>{row.index + 1}</div>
-							<div>
-								<img
-									alt={row.original.CoinInfo.FullName}
-									src={`https://cryptocompare.com${row.original.CoinInfo.ImageUrl}`}
-									width="25px"
-								/>
-							</div>
-							<div>{value}</div>
-						</InlineFlex>
-					);
-				},
-			},
-			{
-				Header: 'Price',
-				accessor: `DISPLAY.${selectedLocalCurrency}.PRICE`,
-				width: 2,
-			},
-			{
-				Header: 'Market cap',
-				accessor: `DISPLAY.${selectedLocalCurrency}.MKTCAP`,
-				width: 2,
-			},
-			{
-				Header: '24h Change',
-				accessor: `DISPLAY.${selectedLocalCurrency}.CHANGE24HOUR`,
-				width: 1,
-			},
-		],
-
-		[selectedLocalCurrency]
-	);
-
 	return (
 		<div>
-			{isLoading ? <Loading /> : <DataTable data={response.Data} columns={columns} rowOnClick={handleClickedRow} />}
+			{isLoading ? (
+				<Loading />
+			) : (
+				<OverviewTable
+					data={response.Data}
+					selectedLocalCurrency={selectedLocalCurrency}
+					handleClickedRow={handleClickedRow}
+				/>
+			)}
 		</div>
 	);
 };
