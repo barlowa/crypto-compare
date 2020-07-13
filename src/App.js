@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { DetailContainer, OverviewContainer } from './Features';
-import Header from './Header';
+import HeaderContainer from './Features/Header/HeaderContainer';
 import { useFetch } from './Hooks';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
 
 	return (
 		<Router>
-			<Header />
+			<HeaderContainer />
 			<div>
 				<Switch>
 					<Route exact path="/" component={OverviewContainer} />

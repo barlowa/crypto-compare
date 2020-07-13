@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { IconButton, DropDown } from './Components';
-import { back, logo } from './Assets';
+import { IconButton, DropDown } from '../../Components';
+import { back, logo } from '../../Assets';
 import styled from 'styled-components';
 
 const HeaderStyle = styled.header`
@@ -29,7 +29,7 @@ const HeaderStyle = styled.header`
 	}
 `;
 
-const Header = () => {
+const HeaderContainer = () => {
 	const dispatch = useDispatch();
 
 	const history = useHistory();
@@ -96,6 +96,4 @@ const Header = () => {
 	);
 };
 
-Header.propTypes = {};
-
-export default Header;
+export default HeaderContainer;
