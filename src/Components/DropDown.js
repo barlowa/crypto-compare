@@ -18,7 +18,7 @@ const DropDown = ({ onChange, value, children }) => {
 DropDown.propTypes = {
 	children: PropTypes.any,
 	onChange: PropTypes.func.isRequired,
-	value: PropTypes.oneOfType(PropTypes.string, PropTypes.number).isRequired,
+	value: PropTypes.string,
 };
 
 export default DropDown;
