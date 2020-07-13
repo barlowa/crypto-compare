@@ -12,7 +12,8 @@ const OverviewContainer = () => {
 
 	//fetches the list of crypto coins from the API with the selected currency
 	const { response, isLoading } = useFetch(
-		`https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=${selectedLocalCurrency}`
+		`https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=${selectedLocalCurrency}`,
+		60000
 	);
 
 	//data in the clicked row from is passed a parameter, user is then pushed to the detail page
