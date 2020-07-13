@@ -1,9 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useFetch } from '../../Hooks';
 import { useParams } from 'react-router';
-import { Loading } from '../../Components';
+import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
+import { Loading } from '../../Components';
+import { useFetch } from '../../Hooks';
+import CoinDetailColumns from './CoinDetailColumns';
+import Rank from './Rank';
+
+const DetailContainerStyle = styled.div`
+	height: calc(100vh - 130px);
+	background-color: #132743;
+	.coinDetails {
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+		padding-top: 75px;
+	}
+`;
 const DetailContainer = () => {
 	const params = useParams();
 	const selectedCryptoCurrency = params.id;
@@ -43,17 +56,22 @@ const DetailContainer = () => {
 
 	const { MKTCAP, VOLUME24HOURTO, TOTALTOPTIERVOLUME24HTO } = marketValues || {};
 	return (
-		<div>
+		<DetailContainerStyle>
 			{isLoading ? (
 				<Loading />
 			) : (
-				<div>
-					<div>{MKTCAP}</div>
-					<div>{VOLUME24HOURTO}</div>
-					<div>{TOTALTOPTIERVOLUME24HTO}</div>
+				<div className="coinDetails">
+					<Rank rank={1} />
+					<CoinDetailColumns
+						marketCap={MKTCAP}
+						volume24h={VOLUME24HOURTO}
+						circulatingSupply={TOTALTOPTIERVOLUME24HTO}
+						totalSupply={TOTALTOPTIERVOLUME24HTO}
+						cryptoCurrency={selectedCryptoCurrency}
+					/>
 				</div>
 			)}
-		</div>
+		</DetailContainerStyle>
 	);
 };
 
