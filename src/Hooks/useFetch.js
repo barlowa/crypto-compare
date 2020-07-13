@@ -3,17 +3,15 @@ import { useState, useEffect } from 'react';
 const useFetch = (url, refreshIntervalInMs) => {
 	const [response, setResponse] = useState({});
 	const [error, setError] = useState(null);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [intervalCount, setIntervalCount] = useState(0);
 
 	//if a refresh interval parameter has been to the hook, the setIntervalCount will be updated and cause the data to be re-fetched
 	useEffect(() => {
 		if (refreshIntervalInMs) {
 			const timer = setInterval(() => {
-				console.log('setting interval');
 				setIntervalCount((count) => count + 1);
 			}, refreshIntervalInMs);
-			console.log(intervalCount);
 			return () => clearTimeout(timer);
 		}
 	}, [intervalCount, refreshIntervalInMs]);
@@ -25,6 +23,7 @@ const useFetch = (url, refreshIntervalInMs) => {
 		const getData = async () => {
 			try {
 				setIsLoading(true);
+				setResponse({});
 				const response = await fetch(url);
 				const json = await response.json();
 				if (!signal.aborted) {
