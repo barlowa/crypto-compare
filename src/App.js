@@ -7,18 +7,17 @@ import { useFetch } from './Hooks';
 
 function App() {
 	const dispatch = useDispatch();
-	const { response } = useFetch('https://min-api.cryptocompare.com/data/all/coinlist?summary=true');
+	const { response, isLoading, error } = useFetch('https://min-api.cryptocompare.com/data/all/coinlist?summary=true');
 
 	//not the way i would have liked to have done this. CoinInfo is only presented in mktcapfull endpoint which doesnt work if you go directly to the crypto detail page.
 	useEffect(() => {
-		const hasLoaded = Object.keys(response).length ? true : false;
-		if (hasLoaded) {
+		if (!isLoading && !error) {
 			dispatch({
 				type: 'SET_COIN_LIST',
 				coinList: response.Data || {},
 			});
 		}
-	}, [response, dispatch]);
+	}, [response, isLoading, error, dispatch]);
 
 	return (
 		<Router>
